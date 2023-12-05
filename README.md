@@ -1,6 +1,6 @@
 # Affinito_Zac_FinalProject
 
-Simple overview of use/purpose.
+Simple overview of use/purpose of project.
 
 ## Description
 
@@ -35,10 +35,8 @@ command to run if program contains helper info
 
 ## Authors
 
-Contributors names and contact info
+Zac Affinito @zacaffinito
 
-ex. Dominique Pizzie  
-ex. [@DomPizzie](https://twitter.com/dompizzie)
 
 ## Version History
 
@@ -55,8 +53,12 @@ This project is licensed under the [NAME HERE] License - see the LICENSE.md file
 ## Acknowledgments
 
 Inspiration, code snippets, etc.
-* [awesome-readme](https://github.com/matiassingers/awesome-readme)
-* [PurpleBooth](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
-* [dbader](https://github.com/dbader/readme-template)
-* [zenorocha](https://gist.github.com/zenorocha/4526327)
-* [fvcproductions](https://gist.github.com/fvcproductions/1bfc2d4aecb01a834b46)
+Dakai Zhou
+https://medium.com/@DakaiZhou/generate-random-location-coordinates-within-given-area-with-python-1d6e62b6e382
+ 
+Quintagroup
+https://quintagroup.com/cms/python/cocos2d#:~:text=It%20is%20written%20in%20Python%20using%20pyglet%20library.,can%20also%20contain%20other%20sprites.
+ 
+tech with tim
+https://www.youtube.com/watch?v=wicgBgZIUQA&list=PL1P11yPQAo7p_mEAk8Q8FNYVutIc58eXe&index=1
+https://www.techwithtim.net/tutorials/python-online-game-tutorial
