@@ -1,6 +1,6 @@
 # Affinito_Zac_FinalProject
 
-Simple overview of use/purpose of project.
+Make a fully automated calorie tracker and meal plan creator 
 
 ## Description
 
