@@ -21,6 +21,14 @@ def display_calories_window(date):
         info_window.fill((220, 220, 220))
         text_surface = font.render(text, True, (0, 0, 0))
         info_window.blit(text_surface, (20, 20))
+
+        instructions = [
+            "Press 'Enter' to add calories.",
+            "Press 'Esc' to return to the main page.",
+        ]
+        for i, line in enumerate(instructions):
+            draw_text(info_window, font, line, 50, 50 + i * 30, (50, 50, 50))
+
         pygame.display.update()
 
     pygame.quit()
@@ -51,24 +59,28 @@ def display_calories_window_with_calendar(date):
 
         calendar_window.fill((220, 220, 220))
 
-        # Display entered date's calorie info
         text_date = display_calories(date)
         text_surface_date = font.render(text_date, True, (0, 0, 0))
         calendar_window.blit(text_surface_date, (20, 20))
 
-        # Get previous week's dates
         previous_week_dates = get_previous_week_dates(date)
         calorie_info = ""
         for day in previous_week_dates:
             calorie_info += display_calories(day) + "\n"
 
-        # Display previous week's calorie info in a calendar format
         draw_calendar(calendar_window, font, calorie_info)
+
+        instructions = [
+            "Press 'Enter' to add calories.",
+            "Press 'V' to return to the main page.",
+        ]
+        for i, line in enumerate(instructions):
+            draw_text(calendar_window, font, line, 50, 50 + i * 30, (50, 50, 50))
 
         pygame.display.update()
 
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_RETURN]:  # Press 'Enter' to add calories
+        if keys[pygame.K_RETURN]:
             input_text = ""
             while True:
                 for event in pygame.event.get():
@@ -86,6 +98,9 @@ def display_calories_window_with_calendar(date):
                 draw_text(calendar_window, font, input_text, 50, 100)
                 pygame.display.update()
 
+        if keys[pygame.K_v]:
+            return  # Return to the main window if 'V' key is pressed
+
     pygame.quit()
 
 def get_previous_week_dates(date):
@@ -93,10 +108,8 @@ def get_previous_week_dates(date):
     date_obj = datetime.strptime(date, date_format)
     prev_week_dates = []
 
-    # Find the start date of the week
     start_of_week = date_obj - timedelta(days=date_obj.weekday())
 
-    # Generate the dates for the previous week
     for i in range(7):
         prev_week_dates.append((start_of_week + timedelta(days=i)).strftime(date_format))
 
@@ -111,31 +124,28 @@ def draw_calendar(window, font, calorie_info):
     start_x = 20
     start_y = 80
 
-    # Draw headers for days
     for i, day in enumerate(calendar.day_abbr):
         pygame.draw.rect(window, (200, 200, 200), (start_x + (i * cell_width), start_y, cell_width, cell_height))
         text_surface = font.render(day, True, (0, 0, 0))
         window.blit(text_surface, (start_x + (i * cell_width) + 10, start_y + 10))
 
-    # Draw boxes for each day
     for i, day in enumerate(calorie_info.split('\n')):
         x = start_x + (i % 7) * cell_width
         y = start_y + (i // 7) * cell_height
 
         if day.startswith("No data"):
-            color = (255, 150, 150)  # Reddish color for days without data
+            color = (255, 150, 150)
         elif day.startswith("Calories"):
             if day.split(": ")[1] == today:
-                color = (150, 255, 150)  # Greenish color for today's date
+                color = (150, 255, 150)
             else:
-                color = (200, 200, 255)  # Bluish color for other dates
+                color = (200, 200, 255)
         else:
             continue
 
         pygame.draw.rect(window, color, (x, y, cell_width, cell_height))
         text_surface = font.render(day, True, (0, 0, 0))
         window.blit(text_surface, (x + 5, y + 30))
-
 
 def draw_text(window, font, text, x, y, color=(0, 0, 0)):
     text_surface = font.render(text, True, color)
@@ -155,7 +165,7 @@ def main():
     font = pygame.font.Font(None, 28)
 
     running = True
-    calorie_entry_mode = False  # Flag to control if the user is in calorie entry mode
+    calorie_entry_mode = False
 
     while running:
         window.fill(white)
@@ -165,7 +175,6 @@ def main():
                 running = False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_a and not calorie_entry_mode:
-                    # Code for adding calories
                     input_date = True
                     input_text = ""
                     while input_date:
@@ -184,11 +193,9 @@ def main():
                         pygame.display.update()
 
                     date = input_text
-                    input_text = ""
-                    calorie_entry_mode = True  # Enter calorie entry mode after entering the date
+                    calorie_entry_mode = True
 
                 elif event.key == pygame.K_RETURN and calorie_entry_mode:
-                    # Code for entering calories
                     input_calories = True
                     while input_calories:
                         for event in pygame.event.get():
@@ -207,10 +214,9 @@ def main():
 
                     calories = int(input_text)
                     add_calories(date, calories)
-                    calorie_entry_mode = False  # Exit calorie entry mode after entering calories
+                    calorie_entry_mode = False
 
                 elif event.key == pygame.K_d and not calorie_entry_mode:
-                    # Code for displaying past calorie entries
                     input_date = True
                     input_text = ""
                     while input_date:
@@ -234,13 +240,13 @@ def main():
         instructions = [
             "Welcome to the Calorie Tracker!",
             "Press 'A' to add calories.",
-            "Press 'D' to view past calorie entries", 
+            "Press 'D' to view past calorie entries",
             "Follow the prompts on the screen to enter date and calories.",
         ]
         for i, line in enumerate(instructions):
             draw_text(window, font, line, 50, 50 + i * 30, black)
 
-        text = display_calories("2023-01-01")  # Replace "2023-01-01" with the date you want to display
+        text = display_calories("2023-01-01")
         draw_text(window, font, text, 50, 200, black)
 
         pygame.display.update()
