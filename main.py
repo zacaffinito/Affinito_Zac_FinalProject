@@ -4,7 +4,6 @@ import calendar
 from datetime import datetime, timedelta
 
 calorie_tracker = {}
-
 def display_calories_window(date):
     pygame.init()
     info_window = pygame.display.set_mode((300, 100))
@@ -17,13 +16,15 @@ def display_calories_window(date):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    return
 
         info_window.fill((220, 220, 220))
         text_surface = font.render(text, True, (0, 0, 0))
         info_window.blit(text_surface, (20, 20))
 
         instructions = [
-            "Press 'Enter' to add calories.",
             "Press 'Esc' to return to the main page.",
         ]
         for i, line in enumerate(instructions):
@@ -56,6 +57,9 @@ def display_calories_window_with_calendar(date):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_v:
+                    return
 
         calendar_window.fill((220, 220, 220))
 
@@ -71,35 +75,12 @@ def display_calories_window_with_calendar(date):
         draw_calendar(calendar_window, font, calorie_info)
 
         instructions = [
-            "Press 'Enter' to add calories.",
             "Press 'V' to return to the main page.",
         ]
         for i, line in enumerate(instructions):
             draw_text(calendar_window, font, line, 50, 50 + i * 30, (50, 50, 50))
 
         pygame.display.update()
-
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_RETURN]:
-            input_text = ""
-            while True:
-                for event in pygame.event.get():
-                    if event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_RETURN:
-                            add_calories(date, int(input_text))
-                            return  # Return to the main window after adding calories
-                        elif event.key == pygame.K_BACKSPACE:
-                            input_text = input_text[:-1]
-                        else:
-                            input_text += event.unicode
-
-                calendar_window.fill((220, 220, 220))
-                draw_text(calendar_window, font, "Enter calories:", 50, 50)
-                draw_text(calendar_window, font, input_text, 50, 100)
-                pygame.display.update()
-
-        if keys[pygame.K_v]:
-            return  # Return to the main window if 'V' key is pressed
 
     pygame.quit()
 
