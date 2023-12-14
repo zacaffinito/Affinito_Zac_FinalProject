@@ -68,6 +68,23 @@ def display_calories_window_with_calendar(date):
         pygame.display.update()
 
         keys = pygame.key.get_pressed()
+        if keys[pygame.K_RETURN]:  # Press 'Enter' to add calories
+            input_text = ""
+            while True:
+                for event in pygame.event.get():
+                    if event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_RETURN:
+                            add_calories(date, int(input_text))
+                            return  # Return to the main window after adding calories
+                        elif event.key == pygame.K_BACKSPACE:
+                            input_text = input_text[:-1]
+                        else:
+                            input_text += event.unicode
+
+                calendar_window.fill((220, 220, 220))
+                draw_text(calendar_window, font, "Enter calories:", 50, 50)
+                draw_text(calendar_window, font, input_text, 50, 100)
+                pygame.display.update()
 
     pygame.quit()
 
@@ -138,6 +155,8 @@ def main():
     font = pygame.font.Font(None, 28)
 
     running = True
+    calorie_entry_mode = False  # Flag to control if the user is in calorie entry mode
+
     while running:
         window.fill(white)
 
@@ -145,7 +164,8 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_a:
+                if event.key == pygame.K_a and not calorie_entry_mode:
+                    # Code for adding calories
                     input_date = True
                     input_text = ""
                     while input_date:
@@ -165,6 +185,10 @@ def main():
 
                     date = input_text
                     input_text = ""
+                    calorie_entry_mode = True  # Enter calorie entry mode after entering the date
+
+                elif event.key == pygame.K_RETURN and calorie_entry_mode:
+                    # Code for entering calories
                     input_calories = True
                     while input_calories:
                         for event in pygame.event.get():
@@ -180,14 +204,13 @@ def main():
                         draw_text(window, font, "Enter calories:", 50, 50)
                         draw_text(window, font, input_text, 50, 100)
                         pygame.display.update()
-                    
-                    date = input_text
-                    display_calories_window_with_calendar(date)
 
                     calories = int(input_text)
                     add_calories(date, calories)
+                    calorie_entry_mode = False  # Exit calorie entry mode after entering calories
 
-                elif event.key == pygame.K_d:  
+                elif event.key == pygame.K_d and not calorie_entry_mode:
+                    # Code for displaying past calorie entries
                     input_date = True
                     input_text = ""
                     while input_date:
@@ -226,4 +249,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
