@@ -4,11 +4,12 @@ import calendar
 from datetime import datetime, timedelta
 
 calorie_tracker = {}
+
 def display_calories_window(date):
     pygame.init()
-    info_window = pygame.display.set_mode((300, 100))
+    info_window = pygame.display.set_mode((800, 600))
     pygame.display.set_caption('Calorie Info')
-    font = pygame.font.Font(None, 28)
+    font = pygame.font.Font(None, 36)
     text = display_calories(date)
     running = True
 
@@ -22,13 +23,13 @@ def display_calories_window(date):
 
         info_window.fill((220, 220, 220))
         text_surface = font.render(text, True, (0, 0, 0))
-        info_window.blit(text_surface, (20, 20))
+        info_window.blit(text_surface, (50, 50))
 
         instructions = [
             "Press 'Esc' to return to the main page.",
         ]
         for i, line in enumerate(instructions):
-            draw_text(info_window, font, line, 50, 50 + i * 30, (50, 50, 50))
+            draw_text(info_window, font, line, 50, 450 + i * 50, (50, 50, 50))
 
         pygame.display.update()
 
@@ -48,9 +49,9 @@ def display_calories(date):
 
 def display_calories_window_with_calendar(date):
     pygame.init()
-    calendar_window = pygame.display.set_mode((600, 400))
+    calendar_window = pygame.display.set_mode((1000, 800))
     pygame.display.set_caption('Calorie Info & Calendar')
-    font = pygame.font.Font(None, 28)
+    font = pygame.font.Font(None, 36)
     running = True
 
     while running:
@@ -65,7 +66,7 @@ def display_calories_window_with_calendar(date):
 
         text_date = display_calories(date)
         text_surface_date = font.render(text_date, True, (0, 0, 0))
-        calendar_window.blit(text_surface_date, (20, 20))
+        calendar_window.blit(text_surface_date, (50, 50))
 
         previous_week_dates = get_previous_week_dates(date)
         calorie_info = ""
@@ -78,7 +79,7 @@ def display_calories_window_with_calendar(date):
             "Press 'V' to return to the main page.",
         ]
         for i, line in enumerate(instructions):
-            draw_text(calendar_window, font, line, 50, 50 + i * 30, (50, 50, 50))
+            draw_text(calendar_window, font, line, 50, 650 + i * 50, (50, 50, 50))
 
         pygame.display.update()
 
@@ -100,15 +101,15 @@ def draw_calendar(window, font, calorie_info):
     date_format = "%m-%d-%y"
     today = datetime.today().strftime(date_format)
 
-    cell_width = 80
-    cell_height = 60
-    start_x = 20
-    start_y = 80
+    cell_width = 120
+    cell_height = 90
+    start_x = 50
+    start_y = 120
 
     for i, day in enumerate(calendar.day_abbr):
         pygame.draw.rect(window, (200, 200, 200), (start_x + (i * cell_width), start_y, cell_width, cell_height))
         text_surface = font.render(day, True, (0, 0, 0))
-        window.blit(text_surface, (start_x + (i * cell_width) + 10, start_y + 10))
+        window.blit(text_surface, (start_x + (i * cell_width) + 20, start_y + 20))
 
     for i, day in enumerate(calorie_info.split('\n')):
         x = start_x + (i % 7) * cell_width
@@ -126,7 +127,7 @@ def draw_calendar(window, font, calorie_info):
 
         pygame.draw.rect(window, color, (x, y, cell_width, cell_height))
         text_surface = font.render(day, True, (0, 0, 0))
-        window.blit(text_surface, (x + 5, y + 30))
+        window.blit(text_surface, (x + 10, y + 40))
 
 def draw_text(window, font, text, x, y, color=(0, 0, 0)):
     text_surface = font.render(text, True, color)
@@ -135,15 +136,14 @@ def draw_text(window, font, text, x, y, color=(0, 0, 0)):
 def main():
     pygame.init()
 
-    window_width, window_height = 800, 400
+    window_width, window_height = 1000, 800
     window = pygame.display.set_mode((window_width, window_height))
     pygame.display.set_caption('Calorie Tracker')
 
     white = (255, 255, 255)
     black = (0, 0, 0)
-    grey = (200, 200, 200)
 
-    font = pygame.font.Font(None, 28)
+    font = pygame.font.Font(None, 36)
 
     running = True
     calorie_entry_mode = False
@@ -225,10 +225,10 @@ def main():
             "Follow the prompts on the screen to enter date and calories.",
         ]
         for i, line in enumerate(instructions):
-            draw_text(window, font, line, 50, 50 + i * 30, black)
+            draw_text(window, font, line, 50, 50 + i * 50, black)
 
         text = display_calories("2023-01-01")
-        draw_text(window, font, text, 50, 200, black)
+        draw_text(window, font, text, 50, 400, black)
 
         pygame.display.update()
 
