@@ -3,7 +3,7 @@ import pygame
 import calendar
 from datetime import datetime, timedelta
 
-calorie_tracker = {}
+calorie_tracker = {}  
 
 def display_calories_window(date):
     pygame.init()
@@ -37,13 +37,13 @@ def display_calories_window(date):
 
 def add_calories(date, calories):
     if date in calorie_tracker:
-        calorie_tracker[date] += calories
+        calorie_tracker[date]['calories'] += calories
     else:
-        calorie_tracker[date] = calories
+        calorie_tracker[date] = {'calories': calories}
 
 def display_calories(date):
     if date in calorie_tracker:
-        return f"Calories consumed on {date}: {calorie_tracker[date]}"
+        return f"Calories consumed on {date}: {calorie_tracker[date]['calories']}"
     else:
         return "No data available for this date."
 
@@ -68,12 +68,28 @@ def display_calories_window_with_calendar(date):
         text_surface_date = font.render(text_date, True, (0, 0, 0))
         calendar_window.blit(text_surface_date, (50, 50))
 
-        previous_week_dates = get_previous_week_dates(date)
-        calorie_info = ""
-        for day in previous_week_dates:
-            calorie_info += display_calories(day) + "\n"
+        cell_width = 120
+        cell_height = 90
+        start_x = 50
+        start_y = 120
 
-        draw_calendar(calendar_window, font, calorie_info)
+        previous_week_dates = get_previous_week_dates(date)
+        for i, day in enumerate(previous_week_dates):
+            calorie_text = ''
+            if day in calorie_tracker:
+                calorie_text = str(calorie_tracker[day]['calories'])
+
+            x = start_x + (i % 7) * cell_width
+            y = start_y + (i // 7) * cell_height
+
+            if day == datetime.today().strftime("%m-%d-%y"):
+                color = (200, 200, 255)  # Today's date
+            else:
+                color = (255, 255, 255)  # Other dates
+
+            pygame.draw.rect(calendar_window, color, (x, y, cell_width, cell_height), 2)
+            text_surface = font.render(f"{day}\nCalories: {calorie_text}", True, (0, 0, 0))
+            calendar_window.blit(text_surface, (x + 10, y + 40))
 
         instructions = [
             "Press 'V' to return to the main page.",
@@ -97,10 +113,7 @@ def get_previous_week_dates(date):
 
     return prev_week_dates
 
-def draw_calendar(window, font, calorie_info):
-    date_format = "%m-%d-%y"
-    today = datetime.today().strftime(date_format)
-
+def draw_calendar(window, font, calorie_info, today):
     cell_width = 120
     cell_height = 90
     start_x = 50
@@ -119,13 +132,13 @@ def draw_calendar(window, font, calorie_info):
             color = (255, 150, 150)
         elif day.startswith("Calories"):
             if day.split(": ")[1] == today:
-                color = (150, 255, 150)
+                color = (150, 255, 150)  # Highlight today's date with a different color
             else:
                 color = (200, 200, 255)
         else:
             continue
 
-        pygame.draw.rect(window, color, (x, y, cell_width, cell_height))
+        pygame.draw.rect(window, color, (x, y, cell_width, cell_height), 2)  # Add border to cells
         text_surface = font.render(day, True, (0, 0, 0))
         window.blit(text_surface, (x + 10, y + 40))
 
