@@ -1,11 +1,19 @@
 # Code Created By: Zac Affinito
+# Citations: 
+# https://www.youtube.com/watch?v=jO6qQDNa2UY&ab_channel=TechWithTim
+# https://www.youtube.com/watch?v=e0Pys7H-sjM&t=242s&ab_channel=Amulya%27sAcademy
+# https://www.youtube.com/watch?v=msDgb2qU-EI&ab_channel=SundeepSaradhiKanthety
+# https://www.youtube.com/watch?v=eirjjyP2qcQ&ab_channel=CoreySchafer
+
 import pygame
 import calendar
 from datetime import datetime, timedelta
 
 calorie_tracker = {}  
+# dictionary to store calorie info
 
 def display_calories_window(date):
+    # initialize pygame and set up window
     pygame.init()
     info_window = pygame.display.set_mode((800, 600))
     pygame.display.set_caption('Calorie Info')
@@ -15,8 +23,10 @@ def display_calories_window(date):
 
     while running:
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
+            if event.type == pygame.QUIT:  
+                # Handle window closure event
+                running = False  
+                # Set running to False to exit the loop
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     return
@@ -25,6 +35,7 @@ def display_calories_window(date):
         text_surface = font.render(text, True, (0, 0, 0))
         info_window.blit(text_surface, (50, 50))
 
+        # display instructions to the user
         instructions = [
             "Press 'Esc' to return to the main page.",
         ]
@@ -35,6 +46,7 @@ def display_calories_window(date):
 
     pygame.quit()
 
+# add functionality for adding and displaying calorie info
 def add_calories(date, calories):
     if date in calorie_tracker:
         calorie_tracker[date]['calories'] += calories
@@ -43,13 +55,14 @@ def add_calories(date, calories):
 
 def display_calories(date):
     if date in calorie_tracker:
-        return f"Calories consumed on {date}: {calorie_tracker[date]['calories']}"
+        return f"Calories consumed on {date}: {calorie_tracker[date]['calories']} (press 'V' to return)"
     else:
-        return "No data available for this date."
+        return "No data available for this date - press 'V' to return"
 
+# show calorie info in calendar view across 7 days surrounding a selected date
 def display_calories_window_with_calendar(date):
     pygame.init()
-    calendar_window = pygame.display.set_mode((1000, 800))
+    calendar_window = pygame.display.set_mode((1200, 300))
     pygame.display.set_caption('Calorie Info & Calendar')
     font = pygame.font.Font(None, 36)
     running = True
@@ -68,8 +81,9 @@ def display_calories_window_with_calendar(date):
         text_surface_date = font.render(text_date, True, (0, 0, 0))
         calendar_window.blit(text_surface_date, (50, 50))
 
-        cell_width = 120
-        cell_height = 90
+# cells in calendar view - render with info and at a certain size per cell
+        cell_width = 150
+        cell_height = 150
         start_x = 50
         start_y = 120
 
@@ -79,28 +93,36 @@ def display_calories_window_with_calendar(date):
             if day in calorie_tracker:
                 calorie_text = str(calorie_tracker[day]['calories'])
 
-            x = start_x + (i % 7) * cell_width
-            y = start_y + (i // 7) * cell_height
+            # Calculate positions considering window boundaries
+            row = i // 7
+            col = i % 7
 
-            if day == datetime.today().strftime("%m-%d-%y"):
-                color = (200, 200, 255)  # Today's date
-            else:
-                color = (255, 255, 255)  # Other dates
+            x = start_x + col * cell_width
+            y = start_y + row * cell_height
+
+            # Wrap around if box is out of window bounds
+            if x >= calendar_window.get_width():
+                x -= 7 * cell_width
+                y += cell_height
+
+            # Box color (based on date)
+            color = (200, 200, 255) if day == datetime.today().strftime("%m-%d-%y") else (255, 255, 255)
 
             pygame.draw.rect(calendar_window, color, (x, y, cell_width, cell_height), 2)
-            text_surface = font.render(f"{day}\nCalories: {calorie_text}", True, (0, 0, 0))
-            calendar_window.blit(text_surface, (x + 10, y + 40))
 
-        instructions = [
-            "Press 'V' to return to the main page.",
-        ]
-        for i, line in enumerate(instructions):
-            draw_text(calendar_window, font, line, 50, 650 + i * 50, (50, 50, 50))
+            # render calories consumed and day
+            text_surface_day = font.render(day, True, (0, 0, 0))
+            calendar_window.blit(text_surface_day, (x + 10, y + 10))
+
+            # calories consumed
+            text_surface_calories = font.render(calorie_text, True, (0, 0, 0))
+            calendar_window.blit(text_surface_calories, (x + 10, y + 60))
 
         pygame.display.update()
 
     pygame.quit()
 
+# function to get previous dates in the week
 def get_previous_week_dates(date):
     date_format = "%m-%d-%y"
     date_obj = datetime.strptime(date, date_format)
@@ -113,6 +135,7 @@ def get_previous_week_dates(date):
 
     return prev_week_dates
 
+# draw text and calendar view
 def draw_calendar(window, font, calorie_info, today):
     cell_width = 120
     cell_height = 90
@@ -132,7 +155,8 @@ def draw_calendar(window, font, calorie_info, today):
             color = (255, 150, 150)
         elif day.startswith("Calories"):
             if day.split(": ")[1] == today:
-                color = (150, 255, 150)  # Highlight today's date with a different color
+                color = (150, 255, 150) 
+                # Highlight today's date with a different color
             else:
                 color = (200, 200, 255)
         else:
@@ -141,14 +165,17 @@ def draw_calendar(window, font, calorie_info, today):
         pygame.draw.rect(window, color, (x, y, cell_width, cell_height), 2)  # Add border to cells
         text_surface = font.render(day, True, (0, 0, 0))
         window.blit(text_surface, (x + 10, y + 40))
+        # define fonts and window
 
 def draw_text(window, font, text, x, y, color=(0, 0, 0)):
+    # draw text on the window
     text_surface = font.render(text, True, color)
     window.blit(text_surface, (x, y))
 
 def main():
     pygame.init()
-
+# main functionality - main loop controlling the program flow
+# displays intructions, handles user's input, and manages the state of the program.
     window_width, window_height = 1000, 800
     window = pygame.display.set_mode((window_width, window_height))
     pygame.display.set_caption('Calorie Tracker')
@@ -181,7 +208,8 @@ def main():
                                 else:
                                     input_text += event.unicode
 
-                        window.fill(white)
+                        window.fill(white) 
+                        # fill window with white background
                         draw_text(window, font, "Enter date (MM-DD-YY):", 50, 50)
                         draw_text(window, font, input_text, 50, 100)
                         pygame.display.update()
@@ -190,6 +218,7 @@ def main():
                     calorie_entry_mode = True
 
                 elif event.key == pygame.K_RETURN and calorie_entry_mode:
+                    # prompt the user to enter calories for the date
                     input_calories = True
                     while input_calories:
                         for event in pygame.event.get():
@@ -211,6 +240,7 @@ def main():
                     calorie_entry_mode = False
 
                 elif event.key == pygame.K_d and not calorie_entry_mode:
+                    # enter date to view calendar with calories history
                     input_date = True
                     input_text = ""
                     while input_date:
@@ -230,7 +260,7 @@ def main():
 
                     date = input_text
                     display_calories_window_with_calendar(date)
-
+        # display user instructions
         instructions = [
             "Welcome to the Calorie Tracker!",
             "Press 'A' to add calories.",
@@ -245,7 +275,8 @@ def main():
 
         pygame.display.update()
 
+        # update the display
     pygame.quit()
-
+    # quit pygame after the main loop comes to an end
 if __name__ == "__main__":
     main()

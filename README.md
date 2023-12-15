@@ -1,36 +1,31 @@
 # Affinito_Zac_FinalProject
 
-Make a fully automated calorie tracker and meal plan creator 
+Make a calorie tracker using pygame. The final product should be able to have calories entered, save that information, and then bring up a calendar view showing current and previous entries on given dates.
 
 ## Description
 
-An in-depth paragraph about your project and overview of use.
+The pygame calorie tracker uses a simple system of key presses in order to pull up the tracker and previous entries. To add calories, simply press "a" and denote the date, press enter twice, then denote the number of calories consumed. To bring up the calendar, press "d" and then enter the desired date. the calender brings up the entered date, and the previous week's entries as well.
 
-## Getting Started
 
 ### Dependencies
 
 * Windows 10, os, pygame
 
-### Installing
-
-* How/where to download your program
-* Any modifications needed to be made to files/folders
 
 ### Executing program
 
 * How to run the program
 * Step-by-step bullets
-```
-code blocks for commands
-```
+
+use vscode to run the program with python (pygame)
+follow instructions given in the window
 
 ## Help
 
 Any advise for common problems or issues.
-```
-command to run if program contains helper info
-```
+- often the main menu window pops up more than it should - if this is the case and other functions stop working, try pressing enter a few times, and then the code likes to comply
+- when adding calories sometimes the window comes autofilled with date information - simply delete the date and enter the calories - it should all work out in the end
+
 
 ## Authors
 
@@ -39,25 +34,16 @@ Zac Affinito @zacaffinito
 
 ## Version History
 
-* 0.2
-    * Various bug fixes and optimizations
-    * See [commit change]() or See [release history]()
-* 0.1
-    * Initial Release
+As listed in the github version history
 
 ## License
 
-This project is licensed under the [NAME HERE] License - see the LICENSE.md file for details
+This project is licensed under the MIT License - see the LICENSE.md file for details
 
 ## Acknowledgments
 
 Inspiration, code snippets, etc.
-Dakai Zhou
-https://medium.com/@DakaiZhou/generate-random-location-coordinates-within-given-area-with-python-1d6e62b6e382
- 
-Quintagroup
-https://quintagroup.com/cms/python/cocos2d#:~:text=It%20is%20written%20in%20Python%20using%20pyglet%20library.,can%20also%20contain%20other%20sprites.
- 
-tech with tim
-https://www.youtube.com/watch?v=wicgBgZIUQA&list=PL1P11yPQAo7p_mEAk8Q8FNYVutIc58eXe&index=1
-https://www.techwithtim.net/tutorials/python-online-game-tutorial
+https://www.youtube.com/watch?v=jO6qQDNa2UY&ab_channel=TechWithTim
+https://www.youtube.com/watch?v=e0Pys7H-sjM&t=242s&ab_channel=Amulya%27sAcademy
+https://www.youtube.com/watch?v=msDgb2qU-EI&ab_channel=SundeepSaradhiKanthety
+https://www.youtube.com/watch?v=eirjjyP2qcQ&ab_channel=CoreySchafer
